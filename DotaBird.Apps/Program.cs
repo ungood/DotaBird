@@ -12,8 +12,10 @@ namespace DotaBird.Apps
         public static void Main(string[] args)
         {
             DotaWebApi api = new DotaWebApi();
-            String matchHistory = api.GetMatchHistory();
-            Console.WriteLine("Match History: " + matchHistory);
+            MatchHistoryRequest request = new MatchHistoryRequest();
+            request.PlayerName = "wovoka";
+            MatchHistory matchHistory = api.GetMatchHistory(request);
+            Console.WriteLine(matchHistory);
             Console.WriteLine("Done");
             Console.ReadLine();
         }
