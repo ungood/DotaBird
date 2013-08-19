@@ -3,19 +3,33 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Net;
-//using System.Web.Script.Serialization;
+using Newtonsoft.Json;
 
 namespace DotaBird.Core.Steam
 {
-    public class DotaWebApi
+    public class DotaWebApi : IDotaWebApi
     {
-        public string GetMatchHistory()
+        public MatchHistory GetMatchHistory(MatchHistoryRequest request)
         {
             var client = new WebClient();
+            string requestString = "";
 
-            var json = client.DownloadString("https://api.steampowered.com/IDOTA2Match_570/GetMatchHistory/V001/?key=A41B14673A53F4C0A5281A6C47637C9E");
+            if (request.PlayerName != null)
+                requestString = "player_name=" + request.PlayerName + '&';
+            if (request.StartAtMatchId != null)
+                requestString = requestString + "start_at_match_id=" + request.StartAtMatchId + '&';
+            if (request.MinDate != null)
+                requestString = requestString + "date_min=" + request.MinDate + '&';
+            if (request.MaxDate != null)
+                requestString = requestString + "date_max=" + request.MaxDate + '&';
 
-            return json;
+            string url = "https://api.steampowered.com/IDOTA2Match_570/GetMatchHistory/V001/?" + requestString + "key=A41B14673A53F4C0A5281A6C47637C9E";
+
+            string json = client.DownloadString(url);
+
+            MatchHistory matchHistory = JsonConvert.DeserializeObject<MatchHistory>(json);
+
+            return matchHistory;
         }
     }
 }

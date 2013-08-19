@@ -29,5 +29,16 @@ namespace DotaBird.Core.Steam
     public class MatchSummary
     {
         public long MatchId { get; set; }
+        public long MatchSeqNum { get; set; }
+        public long StartTime { get; set; }
+        public int LobbyType { get; set; }
+        public List<Players> players { get; set; }
+    }
+
+    public class Players
+    {
+        public long AccountId { get; set; }
+        public int PlayerSlot { get; set; }
+        public int HeroId { get; set; }
     }
 }
