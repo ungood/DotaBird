@@ -23,7 +23,7 @@ namespace DotaBird.Core.Steam
         /// <summary>
         /// If set, restricts the results to games after this date/time.
         /// </summary>
-        public DateTime? MinDate { get set; }
+        public DateTime? MinDate { get; set; }
 
         /// <summary>
         /// If set, restricts the results to games before this date/time.
