@@ -9,9 +9,14 @@ namespace DotaBird.Core.Steam
 {
     public class DotaWebApi : IDotaWebApi
     {
+        private const IWebClient webClient;
+        
+        public DotaWebApi(IWebClient webClient) {
+            this.webClient = webClient;
+        }
+        
         public MatchHistory GetMatchHistory(MatchHistoryRequest request)
         {
-            var client = new WebClient();
             string requestString = "";
 
             if (request.PlayerName != null)
@@ -24,8 +29,9 @@ namespace DotaBird.Core.Steam
                 requestString = requestString + "date_max=" + request.MaxDate + '&';
 
             string url = "https://api.steampowered.com/IDOTA2Match_570/GetMatchHistory/V001/?" + requestString + "key=A41B14673A53F4C0A5281A6C47637C9E";
+            Uri uri = new Uri(url); // TODO: See the UriExtensions to add your query parameters more elegantly.
 
-            string json = client.DownloadString(url);
+            string json = webClient.Get(uri);
 
             MatchHistoryEnvelope matchHistory = JsonConvert.DeserializeObject<MatchHistoryEnvelope>(json);
 
