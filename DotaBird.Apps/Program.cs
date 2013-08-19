@@ -15,7 +15,7 @@ namespace DotaBird.Apps
             MatchHistoryRequest request = new MatchHistoryRequest();
             request.PlayerName = "wovoka";
             MatchHistory matchHistory = api.GetMatchHistory(request);
-            Console.WriteLine("Match History: " + matchHistory);
+            Console.WriteLine(matchHistory);
             Console.WriteLine("Done");
             Console.ReadLine();
         }

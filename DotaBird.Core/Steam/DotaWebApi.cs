@@ -27,9 +27,10 @@ namespace DotaBird.Core.Steam
 
             string json = client.DownloadString(url);
 
-            MatchHistory matchHistory = JsonConvert.DeserializeObject<MatchHistory>(json);
+            MatchHistoryEnvelope matchHistory = JsonConvert.DeserializeObject<MatchHistoryEnvelope>(json);
 
-            return matchHistory;
+
+            return matchHistory.Result;
         }
     }
 }
