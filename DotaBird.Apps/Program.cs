@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 
 using DotaBird.Core.Steam;
+using DotaBird.Core.Net;
 
 namespace DotaBird.Apps
 {
@@ -11,7 +12,8 @@ namespace DotaBird.Apps
     {
         public static void Main(string[] args)
         {
-            DotaWebApi api = new DotaWebApi();
+            IWebClient webClient = new WebClient();
+            DotaWebApi api = new DotaWebApi(webClient);
             MatchHistoryRequest request = new MatchHistoryRequest();
             request.PlayerName = "wovoka";
             MatchHistory matchHistory = api.GetMatchHistory(request);
