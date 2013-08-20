@@ -48,10 +48,10 @@ namespace DotaBird.Core.Steam
         public int LobbyType { get; set; }
 
         [JsonProperty("players")]
-        public List<Players> Players { get; set; }
+        public List<PlayerSummary> Players { get; set; }
     }
 
-    public class Players
+    public class PlayerSummary
     {
         [JsonProperty("account_id")]
         public long AccountId { get; set; }
