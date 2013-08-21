@@ -36,13 +36,14 @@ namespace DotaBird.Core.Steam
     public class MatchSummary
     {
         [JsonProperty("match_id")]
-        public long MatchId { get; set; }
+        public long Id { get; set; }
 
         [JsonProperty("match_seq_num")]
-        public long MatchSeqNum { get; set; }
+        public long SeqNum { get; set; }
 
         [JsonProperty("start_time")]
-        public long StartTime { get; set; }
+        [JsonConverter(typeof(SteamDateTimeConverter))]
+        public DateTime StartTime { get; set; }
 
         [JsonProperty("lobby_type")]
         public int LobbyType { get; set; }

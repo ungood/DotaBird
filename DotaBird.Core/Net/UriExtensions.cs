@@ -4,10 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Web;
 
-public static class UriExtensions
+using DotaBird.Core.Util;
+
+namespace DotaBird.Core.Net
 {
-    // From: http://stackoverflow.com/a/10836145
-    public static Uri AddQuery(this Uri uri, string name, string value)
+    public static class UriExtensions
     {
         if (string.IsNullOrEmpty(value))
             return uri;
@@ -16,26 +17,42 @@ public static class UriExtensions
 
         // decodes urlencoded pairs from uri.Query to HttpValueCollection
         var queryString = HttpUtility.ParseQueryString(uri.Query);
+        // From: http://stackoverflow.com/a/10836145
+        public static Uri AddQuery(this Uri uri, string name, string value)
+        {
+            var ub = new UriBuilder(uri);
 
-        queryString.Add(name, value);
+            if (value == "")
+            {
+                name = null;
+            }
+            // decodes urlencoded pairs from uri.Query to HttpValueCollection
+            var queryString = HttpUtility.ParseQueryString(uri.Query);
 
-        // urlencodes the whole HttpValueCollection
-        ub.Query = queryString.ToString();
+            // urlencodes the whole HttpValueCollection
+            ub.Query = queryString.ToString();
+            queryString.Add(name, value);
 
-        return ub.Uri;
-    }
 
-    public static Uri AddQuery(this Uri uri, string name, DateTime? value)
-    {
-        string stringValue = value.ToString();
+            // urlencodes the whole HttpValueCollection
+            ub.Query = queryString.ToString().TrimEnd('&');
 
-        return uri.AddQuery(name, stringValue);
-    }
+            return ub.Uri;
+        }
 
-    public static Uri AddQuery(this Uri uri, string name, long? value)
-    {
-        string stringValue = value.ToString();
+        public static Uri AddQuery(this Uri uri, string name, DateTime? value)
+        {
+            if (!value.HasValue)
+                return uri;
 
-        return uri.AddQuery(name, stringValue);
+            return uri.AddQuery(name, value.Value.ToUnixTimestamp().ToString());
+        }
+
+        public static Uri AddQuery(this Uri uri, string name, long? value)
+        {
+            string stringValue = value.ToString();
+
+            return uri.AddQuery(name, stringValue);
+        }
     }
 }

@@ -5,6 +5,8 @@ using System.Text;
 using System.Net;
 using Newtonsoft.Json;
 
+using DotaBird.Core.Net;
+
 namespace DotaBird.Core.Steam
 {
     public class DotaWebApi : IDotaWebApi

@@ -51,8 +51,12 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Steam\DotaWebApi.cs" />
     <Compile Include="Steam\IDotaWebApi.cs" />
+    <Compile Include="Steam\IMatchPoller.cs" />
     <Compile Include="Steam\MatchHistory.cs" />
     <Compile Include="Steam\MatchHistoryRequest.cs" />
+    <Compile Include="Steam\MatchPoller.cs" />
+    <Compile Include="Steam\SteamDateTimeConverter.cs" />
+    <Compile Include="Util\UnixTimestampHelper.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
