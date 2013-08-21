@@ -6,6 +6,8 @@ using System.Text;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 
+using DotaBird.Core.Util;
+
 namespace DotaBird.Core.Steam
 {
     public class SteamDateTimeConverter : DateTimeConverterBase
@@ -18,9 +20,7 @@ namespace DotaBird.Core.Steam
             long ticks = (long)reader.Value;
 
             // Steam returns date/times as the number of seconds since 1/1/1970 (aka, unix timestamp).
-            DateTime result = new DateTime(1970, 1, 1, 0, 0, 0, 0);
-            result = result.AddSeconds(ticks).ToLocalTime();
-            return result;
+            return UnixTimestampHelper.FromUnixTimestamp(ticks);
         }
 
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)

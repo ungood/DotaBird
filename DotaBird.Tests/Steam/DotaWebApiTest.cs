@@ -70,7 +70,7 @@ namespace DotaBird.Tests.Steam
 
             MatchHistory history = api.GetMatchHistory(new MatchHistoryRequest());
             var actual = history.Matches[0].StartTime;
-            var expected = new DateTime(2013, 08, 20, 22, 45, 45);
+            var expected = new DateTime(2013, 08, 21, 05, 45, 45);
             Assert.AreEqual(expected, actual);
         }
     }
