@@ -52,5 +52,26 @@ namespace DotaBird.Tests.Steam
 
             // See: https://code.google.com/p/moq/wiki/QuickStart for more examples of using Moq.
         }
+
+        [Test]
+        public void TestSteamDateConverter()
+        {
+            var response = @"
+            {
+                result: {
+                    matches: [{
+                        start_time: 1377063945
+                    }]
+                }
+            }";
+
+            mockClient.Setup(client => client.Get(It.IsAny<Uri>()))
+                .Returns(response);
+
+            MatchHistory history = api.GetMatchHistory(new MatchHistoryRequest());
+            var actual = history.Matches[0].StartTime;
+            var expected = new DateTime(2013, 08, 20, 22, 45, 45);
+            Assert.AreEqual(expected, actual);
+        }
     }
 }
