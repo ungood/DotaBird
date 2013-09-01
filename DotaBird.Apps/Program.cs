@@ -16,12 +16,10 @@ namespace DotaBird.Apps
 
             // With real data, let's up this to say... 30 minutes and see how many matches come through.
             // Try to get some idea of the amount of data we're dealing with.
-            var count = CountMatches(poller, TimeSpan.FromSeconds(10));            
-
-            //MatchHistoryRequest request = new MatchHistoryRequest();
-            //request.PlayerName = "wovoka";
-            //MatchHistory matchHistory = api.GetMatchHistory(request);
-            //Console.WriteLine(matchHistory);
+            
+            //var count = CountMatches(poller, TimeSpan.FromMinutes(30));      // 13,882 matches counted
+            var count = CountMatches(poller, TimeSpan.FromSeconds(30));        // 225 matches counted
+           
             Console.WriteLine("{0} matches counted.", count);
             Console.ReadLine();
         }

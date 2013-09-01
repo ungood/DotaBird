@@ -10,6 +10,9 @@ namespace DotaBird.Core.Steam
     {
         private readonly IDotaWebApi api;
         private readonly int throttle;
+        private static int count = 0;
+        private static MatchHistory history;
+        private static int numResults = 25;
 
         public MatchPoller(IDotaWebApi api, int throttle)
         {
@@ -21,8 +24,21 @@ namespace DotaBird.Core.Steam
         {
             while (true)
             {
-                // Clearly we want to do something a little more useful. here.
-                yield return new MatchSummary();
+                // IDK if GetMatchHistory always returns 25 results exactly
+                // so I implemented it in such way to not break if GetMatchHistory returned less than 25 results.
+                bool isMax = false;
+
+                if (count == numResults)
+                    isMax = true;
+
+                if (count == 0 || isMax)
+                {
+                    count = 0;
+                    history = api.GetMatchHistory(new MatchHistoryRequest());
+                    numResults = history.NumResults;
+                }
+
+                yield return history.Matches[count++];
 
                 // We don't want to spam Steam's API
                 Thread.Sleep(throttle);

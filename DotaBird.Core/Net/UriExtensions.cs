@@ -10,22 +10,13 @@ namespace DotaBird.Core.Net
 {
     public static class UriExtensions
     {
-        if (string.IsNullOrEmpty(value))
-            return uri;
-
-        var ub = new UriBuilder(uri);
-
-        // decodes urlencoded pairs from uri.Query to HttpValueCollection
-        var queryString = HttpUtility.ParseQueryString(uri.Query);
-        // From: http://stackoverflow.com/a/10836145
         public static Uri AddQuery(this Uri uri, string name, string value)
         {
             var ub = new UriBuilder(uri);
 
-            if (value == "")
-            {
-                name = null;
-            }
+            if (string.IsNullOrEmpty(value))
+                return uri;
+
             // decodes urlencoded pairs from uri.Query to HttpValueCollection
             var queryString = HttpUtility.ParseQueryString(uri.Query);
 
