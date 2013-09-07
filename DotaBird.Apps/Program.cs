@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.IO;
 
 using DotaBird.Core.Steam;
 using DotaBird.Core.Net;
@@ -19,7 +20,7 @@ namespace DotaBird.Apps
             
             //var count = CountMatches(poller, TimeSpan.FromMinutes(30));      // 13,882 matches counted
             var count = CountMatches(poller, TimeSpan.FromSeconds(30));        // 225 matches counted
-           
+
             Console.WriteLine("{0} matches counted.", count);
             Console.ReadLine();
         }

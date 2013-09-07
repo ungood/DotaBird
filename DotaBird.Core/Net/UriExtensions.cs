@@ -20,8 +20,6 @@ namespace DotaBird.Core.Net
             // decodes urlencoded pairs from uri.Query to HttpValueCollection
             var queryString = HttpUtility.ParseQueryString(uri.Query);
 
-            // urlencodes the whole HttpValueCollection
-            ub.Query = queryString.ToString();
             queryString.Add(name, value);
 
 

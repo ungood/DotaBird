@@ -10,35 +10,40 @@ namespace DotaBird.Core.Steam
     {
         private readonly IDotaWebApi api;
         private readonly int throttle;
-        private static int count = 0;
-        private static MatchHistory history;
-        private static int numResults = 25;
+        private int count = 0;
+        private static MatchHistory historyPrevious = new MatchHistory();
+        private MatchHistory history;
+        private const int numResults = 25;
 
         public MatchPoller(IDotaWebApi api, int throttle)
         {
             this.api = api;
             this.throttle = throttle;
+
+            // initialize historyPrevious's ids to 0                        // Initialization not working, getting a null ref exception
+            while (historyPrevious.Matches.GetEnumerator().MoveNext())
+                historyPrevious.Matches.GetEnumerator().Current.Id = 0;
+                
         }
 
         public IEnumerable<MatchSummary> PollMatches()
         {
+           
             while (true)
             {
-                // IDK if GetMatchHistory always returns 25 results exactly
-                // so I implemented it in such way to not break if GetMatchHistory returned less than 25 results.
-                bool isMax = false;
-
-                if (count == numResults)
-                    isMax = true;
-
-                if (count == 0 || isMax)
+                bool isUnique = true;
+                if (count == 0 || count == numResults)
                 {
                     count = 0;
                     history = api.GetMatchHistory(new MatchHistoryRequest());
-                    numResults = history.NumResults;
                 }
 
-                yield return history.Matches[count++];
+                while (historyPrevious.Matches.GetEnumerator().MoveNext())
+                    if (history.Matches[count].Id == historyPrevious.Matches.GetEnumerator().Current.Id)
+                        isUnique = false;
+
+                if (isUnique)
+                    yield return history.Matches[count++];
 
                 // We don't want to spam Steam's API
                 Thread.Sleep(throttle);
