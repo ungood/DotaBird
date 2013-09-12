@@ -32,8 +32,8 @@ namespace DotaBird.Tests.Steam
             mockWebAPI.Setup(webAPI => webAPI.GetMatchHistory(It.IsAny<MatchHistoryRequest>()))
                 .Returns(history);
 
-            var poller = new MatchPoller(mockWebAPI, 100);      // argument 1 is failing
-
+            var poller = new MatchPoller(mockWebAPI.Object, 100);   // I still don't know how to fix this
+ 
             MatchSummary match = null;
             var matches = poller.PollMatches().GetEnumerator();
             int count = 0;
@@ -45,8 +45,8 @@ namespace DotaBird.Tests.Steam
                 count++;
             }
 
-            Assert.AreEqual(match.Id, 66);
-            Assert.AreEqual(count, 6);
+            Assert.AreEqual(66, match.Id);
+            Assert.AreEqual(6, count);
         }
     }
 }

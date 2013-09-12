@@ -11,43 +11,59 @@ namespace DotaBird.Core.Steam
         private readonly IDotaWebApi api;
         private readonly int throttle;
         private int count = 0;
-        private static MatchHistory historyPrevious = new MatchHistory();
+        private long lastMatchId;
         private MatchHistory history;
         private const int numResults = 25;
+        private MatchHistoryRequest request;
+        private bool firstRun = true;
 
         public MatchPoller(IDotaWebApi api, int throttle)
         {
             this.api = api;
             this.throttle = throttle;
 
-            // initialize historyPrevious's ids to 0                        // Initialization not working, getting a null ref exception
-            while (historyPrevious.Matches.GetEnumerator().MoveNext())
-                historyPrevious.Matches.GetEnumerator().Current.Id = 0;
-                
+            // initialize history, lastmatchid and request
+            history = api.GetMatchHistory();
+            lastMatchId = history.Matches[numResults - 1].Id;
+            request = new MatchHistoryRequest();
+            request.StartAtMatchId = lastMatchId;
+            
         }
 
         public IEnumerable<MatchSummary> PollMatches()
         {
-           
             while (true)
             {
-                bool isUnique = true;
-                if (count == 0 || count == numResults)
+                if (lastMatchId != history.Matches[count].Id || firstRun || count == numResults - 1)
+                    yield return history.Matches[count];
+
+                if (count == numResults - 1)
                 {
+                    request.StartAtMatchId = lastMatchId;
+
                     count = 0;
-                    history = api.GetMatchHistory(new MatchHistoryRequest());
+
+                    history = api.GetMatchHistory(request);
+
+                    if (history.ResultsRemaining > 0)               
+                        lastMatchId = history.Matches[numResults - 1].Id;
+                    else
+                        break;       /// Past ~60 seconds of polling, it runs out of results,
+                                     /// I thought about calling GetMatchHistory with no request
+                                     /// and that works, except, it will cause repeats to happen.
                 }
 
-                while (historyPrevious.Matches.GetEnumerator().MoveNext())
-                    if (history.Matches[count].Id == historyPrevious.Matches.GetEnumerator().Current.Id)
-                        isUnique = false;
-
-                if (isUnique)
-                    yield return history.Matches[count++];
+                if (count == numResults - 1)
+                    firstRun = false;
+                else
+                    count++;
 
                 // We don't want to spam Steam's API
                 Thread.Sleep(throttle);
+
             }
+
+            
         }
     }
 }

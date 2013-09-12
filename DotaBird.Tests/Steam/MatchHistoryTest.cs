@@ -59,8 +59,14 @@ namespace DotaBird.Tests.Steam
             MatchHistory history = api.GetMatchHistory(new MatchHistoryRequest());
             Assert.AreEqual(history.NumResults, 25);
             Assert.AreEqual(history.ResultsRemaining, 475);
+            Assert.AreEqual(history.TotalResults, 500);
             Assert.AreEqual(history.Matches[0].Id, 295198203);
+            Assert.AreEqual(history.Matches[0].LobbyType, 0);
+            Assert.AreEqual(history.Matches[0].SeqNum, 268707406);
             Assert.AreEqual(history.Matches[0].Players[1].HeroId, 46);
+            Assert.AreEqual(history.Matches[0].Players[1].AccountId, 33332908);
+            Assert.AreEqual(history.Matches[0].Players[1].PlayerSlot, 1);
+
         }
     }
 }

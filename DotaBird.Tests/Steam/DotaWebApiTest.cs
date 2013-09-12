@@ -16,7 +16,6 @@ namespace DotaBird.Tests.Steam
     {
         private Mock<IWebClient> mockClient;
         private DotaWebApi api;
-        private Mock<IDotaWebApi> mockWebAPI;
 
         [SetUp]
         public void Setup()
@@ -35,8 +34,6 @@ namespace DotaBird.Tests.Steam
 
             // Then we inject that into the class we want to test.
             api = new DotaWebApi(mockClient.Object);
-
-            mockWebAPI = new Mock<IDotaWebApi>();
         }
 
         [Test]
