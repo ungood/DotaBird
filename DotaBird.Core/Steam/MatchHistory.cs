@@ -15,11 +15,13 @@ namespace DotaBird.Core.Steam
         public MatchHistory Result { get; set; }
     }
 
-    /// <summary>
-    /// 
-    /// </summary>
     public class MatchHistory
     {
+        public long GetLastMatchId()
+        {
+            return this.Matches[24].Id;
+        }
+
         [JsonProperty("num_results")]
         public int NumResults { get; set; }
 

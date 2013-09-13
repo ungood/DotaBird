@@ -35,5 +35,10 @@ namespace DotaBird.Core.Steam
 
             return matchHistory.Result;
         }
+
+        public MatchHistory GetMatchHistory()
+        {
+            return GetMatchHistory(new MatchHistoryRequest());
+        }
     }
 }
