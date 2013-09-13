@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading;
+using System.Diagnostics;
 
 namespace DotaBird.Core.Steam
 {
@@ -10,60 +11,88 @@ namespace DotaBird.Core.Steam
     {
         private readonly IDotaWebApi api;
         private readonly int throttle;
-        private int count = 0;
-        private long lastMatchId;
-        private MatchHistory history;
-        private const int numResults = 25;
-        private MatchHistoryRequest request;
-        private bool firstRun = true;
 
         public MatchPoller(IDotaWebApi api, int throttle)
         {
             this.api = api;
             this.throttle = throttle;
-
-            // initialize history, lastmatchid and request
-            history = api.GetMatchHistory();
-            lastMatchId = history.Matches[numResults - 1].Id;
-            request = new MatchHistoryRequest();
-            request.StartAtMatchId = lastMatchId;
-            
         }
 
         public IEnumerable<MatchSummary> PollMatches()
         {
-            while (true)
+            if (!EventLog.SourceExists("MySource"))
+                EventLog.CreateEventSource("MySource", "MyNewLog");
+
+            List<long> ids = new List<long>();
+
+            int count = 0;
+            bool ranIntoADuplicate = false;
+            const int ONE_MILLION = 1000000;
+            
+            while(true) 
             {
-                if (lastMatchId != history.Matches[count].Id || firstRun || count == numResults - 1)
-                    yield return history.Matches[count];
-
-                if (count == numResults - 1)
+                foreach(MatchSummary summary in GetNextBatch()) 
                 {
-                    request.StartAtMatchId = lastMatchId;
+                    if (ids.Contains(summary.Id))
+                    {
+                        ranIntoADuplicate = true;
+                        break;
+                    }
 
-                    count = 0;
+                    ids.Add(summary.Id);
 
-                    history = api.GetMatchHistory(request);
-
-                    if (history.ResultsRemaining > 0)               
-                        lastMatchId = history.Matches[numResults - 1].Id;
-                    else
-                        break;       /// Past ~60 seconds of polling, it runs out of results,
-                                     /// I thought about calling GetMatchHistory with no request
-                                     /// and that works, except, it will cause repeats to happen.
-                }
-
-                if (count == numResults - 1)
-                    firstRun = false;
-                else
+                    yield return summary;
+                    
                     count++;
 
-                // We don't want to spam Steam's API
+                    if (count == ONE_MILLION)
+                    {
+                        // 1 long = 8 bytes; 1 million longs = 8 MB.  I don't want to exceed that much ram used,
+                        // so when that limit is reached, I clear the oldest/bottom half of the list.  
+                        // This will probably never happen.
+                        ids.RemoveRange(0, ONE_MILLION / 2);
+                        count = ONE_MILLION / 2;
+                    }
+                }
+
+                if (!ranIntoADuplicate)
+                {
+                    EventLog myLog = new EventLog();
+                    myLog.Source = "MySource";
+                    myLog.WriteEntry("Never ran into a duplicate.", EventLogEntryType.Warning);
+
+                    Console.WriteLine("Warning: Never ran into a duplicate.");
+                }
+
                 Thread.Sleep(throttle);
-
             }
+        }
 
-            
+        public IEnumerable<MatchSummary> GetNextBatch()
+        {
+            foreach (MatchHistory history in GetPages())
+            {
+                foreach (MatchSummary match in history.Matches)
+                {
+                    yield return match;
+                }
+            }
+        }
+
+        public IEnumerable<MatchHistory> GetPages() 
+        {
+            MatchHistory history = api.GetMatchHistory();
+            yield return history;
+
+            while(history.ResultsRemaining > 0) 
+            {
+                MatchHistoryRequest request = new MatchHistoryRequest()
+                {
+                    StartAtMatchId = history.GetLastMatchId() - 1
+                };
+                history = api.GetMatchHistory(request);
+                yield return history;
+            }
         }
     }
 }

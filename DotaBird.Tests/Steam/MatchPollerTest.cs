@@ -24,15 +24,15 @@ namespace DotaBird.Tests.Steam
 
 
         [Test]
-        public void TestMatchPoller()
+        public void TestMatchPoller()                                       // still not working
         {
             MatchHistory history = new MatchHistory();
             history.Matches[5].Id = 66;
 
-            mockWebAPI.Setup(webAPI => webAPI.GetMatchHistory(It.IsAny<MatchHistoryRequest>()))
+            mockWebAPI.Setup(webAPI => webAPI.GetMatchHistory())    
                 .Returns(history);
 
-            var poller = new MatchPoller(mockWebAPI.Object, 100);   // I still don't know how to fix this
+            var poller = new MatchPoller(mockWebAPI.Object, 100);   
  
             MatchSummary match = null;
             var matches = poller.PollMatches().GetEnumerator();
