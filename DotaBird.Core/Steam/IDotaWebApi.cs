@@ -8,5 +8,6 @@ namespace DotaBird.Core.Steam
     public interface IDotaWebApi
     {
         MatchHistory GetMatchHistory(MatchHistoryRequest request);
+        MatchHistory GetMatchHistory();
     }
 }

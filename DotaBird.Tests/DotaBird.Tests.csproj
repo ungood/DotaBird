@@ -48,6 +48,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Steam\MatchHistoryTest.cs" />
+    <Compile Include="Steam\MatchPollerTest.cs" />
+    <Compile Include="Steam\UriExtensionsTest.cs" />
     <Compile Include="Steam\DotaWebApiTest.cs" />
   </ItemGroup>
   <ItemGroup>

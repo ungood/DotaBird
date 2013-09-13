@@ -1,14 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <VisualState xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ShowCheckBoxes="false">
-  <TopNode>[0-1000]C:\projects\DotaBird\DotaBird.nunit</TopNode>
-  <SelectedNode>[0-1002]DotaBird.Tests.Steam.DotaWebApiTest.ExampleTestWithMoq</SelectedNode>
+  <TopNode>[0-1000]C:\Users\Wovoka\Documents\GitHub\DotaBird\DotaBird.nunit</TopNode>
+  <SelectedNode>[0-1004]DotaBird.Tests.Steam.MatchPollerTest.TestMatchPoller</SelectedNode>
   <ExcludeCategories>false</ExcludeCategories>
   <Nodes>
-    <Node UniqueName="[0-1000]C:\projects\DotaBird\DotaBird.nunit" Expanded="true" />
-    <Node UniqueName="[0-1004]C:\projects\DotaBird\DotaBird.Tests\bin\Debug\DotaBird.Tests.dll" Expanded="true" />
-    <Node UniqueName="[0-1005]DotaBird" Expanded="true" />
-    <Node UniqueName="[0-1006]DotaBird.Tests" Expanded="true" />
-    <Node UniqueName="[0-1007]DotaBird.Tests.Steam" Expanded="true" />
-    <Node UniqueName="[0-1001]DotaBird.Tests.Steam.DotaWebApiTest" Expanded="true" />
+    <Node UniqueName="[0-1000]C:\Users\Wovoka\Documents\GitHub\DotaBird\DotaBird.nunit" Expanded="true" />
+    <Node UniqueName="[0-1011]C:\Users\Wovoka\Documents\GitHub\DotaBird\DotaBird.Tests\bin\Debug\DotaBird.Tests.dll" Expanded="true" />
+    <Node UniqueName="[0-1012]DotaBird" Expanded="true" />
+    <Node UniqueName="[0-1013]DotaBird.Tests" Expanded="true" />
+    <Node UniqueName="[0-1014]DotaBird.Tests.Steam" Expanded="true" />
+    <Node UniqueName="[0-1008]DotaBird.Tests.Steam.DotaWebApiTest" Expanded="true" />
+    <Node UniqueName="[0-1001]DotaBird.Tests.Steam.MatchHistoryTest" Expanded="true" />
+    <Node UniqueName="[0-1003]DotaBird.Tests.Steam.MatchPollerTest" Expanded="true" />
+    <Node UniqueName="[0-1005]DotaBird.Tests.Steam.UriExtensionsTest" Expanded="true" />
   </Nodes>
 </VisualState>
