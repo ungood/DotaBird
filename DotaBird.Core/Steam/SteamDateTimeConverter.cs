@@ -25,8 +25,8 @@ namespace DotaBird.Core.Steam
 
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
         {
-            // YAGNI - we don't ever need to write dates in Steam's format.
-            throw new NotImplementedException();
+            DateTime dt = (DateTime)value;
+            writer.WriteValue(UnixTimestampHelper.ToUnixTimestamp(dt));
         }
     }
 }

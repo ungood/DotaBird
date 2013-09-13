@@ -3,44 +3,56 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
+using NLog;
+
 using DotaBird.Core.Steam;
 using DotaBird.Core.Net;
 
 namespace DotaBird.Apps
 {
-    public class Program
+    public class Program : BaseApp
     {
-        public static bool testMode = true;
+        private readonly Logger logger = LogManager.GetCurrentClassLogger();
+
+        protected override string AppName
+        {
+            get { return "DotaBirdPollingApp"; }
+        }
 
         public static void Main(string[] args)
         {
-            List<string> myList = new List<string>();                                        
-            var poller = Initialize();
-
-            // With real data, let's up this to say... 30 minutes and see how many matches come through.
-            // Try to get some idea of the amount of data we're dealing with.
-            
-            var count = CountMatches(poller, TimeSpan.FromMinutes(30), myList);          // 540 matches found -- hmmm? seems low. 
-            //var count = CountMatches(poller, TimeSpan.FromSeconds(30), myList);        // 502 matches found
-
-            Console.WriteLine("{0} matches counted.", count);
-
-
-            if (testMode)
-                TestOverlapping(myList);                                                  
-
-
-            Console.ReadLine();
+            new Program().Run();
         }
 
-        private static IMatchPoller Initialize()
+        public static bool testMode = true;
+
+        private readonly IMatchPoller poller;
+
+        public Program()
         {
             var webClient = new WebClient();
             var api = new DotaWebApi(webClient);
-            return new MatchPoller(api, 100);
+            poller = new MatchPoller(api);
         }
 
-        private static long CountMatches(IMatchPoller poller, TimeSpan span, List<string> myList)
+        public void Run() {
+                                                  
+            
+            //// With real data, let's up this to say... 30 minutes and see how many matches come through.
+            //// Try to get some idea of the amount of data we're dealing with.
+            
+            //var count = CountMatches(poller, TimeSpan.FromMinutes(30), myList);          // 540 matches found -- hmmm? seems low. 
+            var count = CountMatches(TimeSpan.FromMinutes(30));        // 502 matches found
+            logger.Info("{0} matches counted.", count);
+
+            //if (testMode)
+            //    TestOverlapping(myList);                                                  
+
+            Console.WriteLine("Done, press enter.");
+            Console.ReadLine();
+        }
+
+        private long CountMatches(TimeSpan span)
         {
             var start = DateTime.Now;
             var matches = poller.PollMatches().GetEnumerator();
@@ -50,11 +62,8 @@ namespace DotaBird.Apps
             {
                 count++;
                 var match = matches.Current;
-                Console.WriteLine("Match: {0} @ {1}", match.Id, match.StartTime);
-
-                if (testMode)
-                    myList.Add(match.Id.ToString());                                            
-
+                
+                logger.Info("Match: {0} @ {1}", match.Id, match.StartTime);
             }
 
             return count;

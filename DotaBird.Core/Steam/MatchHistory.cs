@@ -19,7 +19,12 @@ namespace DotaBird.Core.Steam
     {
         public long GetLastMatchId()
         {
-            return this.Matches[24].Id;
+            // There was a pretty serious bug here.
+            // You are not guaranteed this will always have 25 items in it.
+            // And in fact, it was returning 100 results at a time.
+            if (Matches.Count == 0)
+                return -1;
+            return Matches[Matches.Count - 1].Id;
         }
 
         [JsonProperty("num_results")]
@@ -33,6 +38,11 @@ namespace DotaBird.Core.Steam
 
         [JsonProperty("matches")]
         public List<MatchSummary> Matches { get; set; }
+
+        public override string ToString()
+        {
+            return JsonConvert.SerializeObject(this);
+        }
     }
 
     public class MatchSummary
