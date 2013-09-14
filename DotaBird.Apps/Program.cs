@@ -16,9 +16,6 @@ namespace DotaBird.Apps
         {
             List<string> myList = new List<string>();                                        
             var poller = Initialize();
-
-            // With real data, let's up this to say... 30 minutes and see how many matches come through.
-            // Try to get some idea of the amount of data we're dealing with.
             
             var count = CountMatches(poller, TimeSpan.FromMinutes(30), myList);          // 540 matches found -- hmmm? seems low. 
             //var count = CountMatches(poller, TimeSpan.FromSeconds(30), myList);        // 502 matches found
