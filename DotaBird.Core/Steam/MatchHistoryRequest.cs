@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Newtonsoft.Json;
 
 namespace DotaBird.Core.Steam
 {
@@ -29,5 +30,10 @@ namespace DotaBird.Core.Steam
         /// If set, restricts the results to games before this date/time.
         /// </summary>
         public DateTime? MaxDate { get; set; }
+
+        public override string ToString()
+        {
+            return JsonConvert.SerializeObject(this);
+        }
     }
 }
