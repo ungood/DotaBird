@@ -59,6 +59,9 @@
     <Compile Include="Steam\MatchHistoryRequest.cs" />
     <Compile Include="Steam\MatchPoller.cs" />
     <Compile Include="Steam\SteamDateTimeConverter.cs" />
+    <Compile Include="Twitter\CheckPlayerRequested.cs" />
+    <Compile Include="Twitter\PlayerRequests.cs" />
+    <Compile Include="Twitter\TwitterHandler.cs" />
     <Compile Include="Util\UnixTimestampHelper.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -6,10 +6,6 @@ using Newtonsoft.Json;
 
 namespace DotaBird.Core.Steam
 {
-    /// <summary>
-    /// If you look carefully, you'll notice the JSON returned by GetMatchHistory is not, in fact, a MatchHistory object,
-    /// it is an object with a single property, "result", which is the MatchHistory data.
-    /// </summary>
     public class MatchHistoryEnvelope
     {
         public MatchHistory Result { get; set; }
@@ -19,9 +15,6 @@ namespace DotaBird.Core.Steam
     {
         public long GetLastMatchId()
         {
-            // There was a pretty serious bug here.
-            // You are not guaranteed this will always have 25 items in it.
-            // And in fact, it was returning 100 results at a time.
             if (Matches.Count == 0)
                 return -1;
             return Matches[Matches.Count - 1].Id;
