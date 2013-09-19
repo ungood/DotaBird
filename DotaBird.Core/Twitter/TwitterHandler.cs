@@ -33,7 +33,7 @@ namespace DotaBird.Core.Twitter
         {
             string consumerKey = ConfigurationManager.AppSettings["consumerKey"];
             string consumerSecret = ConfigurationManager.AppSettings["consumerSecret"];
-            string accessKey = ConfigurationManager.AppSettings["accessToken"];
+            string accessKey = ConfigurationManager.AppSettings["accessKey"];
             string accessSecret = ConfigurationManager.AppSettings["accessSecret"];
 
             // Pass credentials to the service
