@@ -7,6 +7,7 @@ using NLog;
 
 using DotaBird.Core.Steam;
 using DotaBird.Core.Net;
+using DotaBird.Core.Twitter;
 
 namespace DotaBird.Apps
 {
@@ -21,7 +22,8 @@ namespace DotaBird.Apps
 
         public static void Main(string[] args)
         {
-            new Program().Run();
+            new TwitterHandler().PostOnTwitter();
+            //new Program().Run();
         }
 
         private readonly IMatchPoller poller;
