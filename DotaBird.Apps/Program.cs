@@ -22,7 +22,7 @@ namespace DotaBird.Apps
 
         public static void Main(string[] args)
         {
-            new TwitterHandler().PostOnTwitter();
+            new TwitterHandler().PostOnTwitter(new MatchSummary() { Id = 315893539 }, "Nole_Wovoka", "Sinvalss");
             //new Program().Run();
         }
 

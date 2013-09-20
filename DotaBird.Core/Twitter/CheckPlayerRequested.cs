@@ -10,8 +10,24 @@ namespace DotaBird.Core.Twitter
     /// call Twitter Handler to handle the twitter posting 
     public class CheckPlayerRequested
     {
-        
+        private string ConvertPlayerIDToName(long steamId)
+        {
+            string playerName ="";
 
+            return playerName;
+        }
+
+        private bool IsPlayerRequestedAccessable(long steamId)
+        {
+
+            return true;
+        }
+
+        private void CheckForMatch()
+        {
+
+            //new TwitterHandler().PostOnTwitter(summary, requestor, playerRequested);
+        }
         
 
     }

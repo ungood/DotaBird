@@ -17,9 +17,9 @@ namespace DotaBird.Core.Twitter
             return requestDictionary;
         }
 
-        public void AddRequests()
+        public void AddRequest(long playerRequested, string requestor)
         {
-           
+            requestDictionary.Add(playerRequested, requestor);
         }
     }
 }

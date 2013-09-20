@@ -2,31 +2,25 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Net;
-using System.Threading;
 
 using System.Configuration;
 using TweetSharp;
+
+using DotaBird.Core.Steam;
 
 namespace DotaBird.Core.Twitter
 {
     public class TwitterHandler
     {
         /// call to twitter to write the player's match summary to the requestor's twitter handle 
-        public void PostOnTwitter()
+        public void PostOnTwitter(MatchSummary summary, string requestor, string playerRequested)
         {
             TwitterService service = GetAuthService();
-            SendTweetOptions options = new SendTweetOptions() { Status = "Hello from Bot!" };
+
+            SendTweetOptions options = new SendTweetOptions() 
+            { Status = LoadUpStatusText(summary, requestor, playerRequested) };
 
             service.SendTweet(options);
-
-            var tweets = service.ListTweetsOnHomeTimeline(new ListTweetsOnHomeTimelineOptions());
-            foreach (var tweet in tweets)
-            {
-                Console.WriteLine("{0} says '{1}'", tweet.User.ScreenName, tweet.Text);
-            }//*/
-
-
         }
         
         private TwitterService GetAuthService()
@@ -41,6 +35,15 @@ namespace DotaBird.Core.Twitter
             service.AuthenticateWith(accessKey, accessSecret);
 
             return service;
+        }
+
+        private string LoadUpStatusText(MatchSummary summary, string requestor, string playerRequested)
+        {
+            const string url = "http://dotabuff.com/matches/";
+            string twitterHandle = "@" + requestor + '\n';
+            string playerName = playerRequested;
+
+            return twitterHandle + playerName + " just finished his/her match! To find out more go to " + url + summary.Id;
         }
     }
 }
