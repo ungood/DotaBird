@@ -19,8 +19,7 @@ namespace DotaBird.Core.Twitter
     /// </summary>
     public class ManipulateRequests
     {
-
-        public ManipulateRequests(TwitterHandler twitterHandler)
+        public void GetRequestsFromTwitter(TwitterHandler twitterHandler)
         {
             FileInfo fi = new FileInfo(@"c:\Users\Wovoka\Documents\GitHub\DotaBird\RequestTable.txt");
             StreamReader reader = fi.OpenText();

@@ -48,7 +48,8 @@ namespace DotaBird.Apps
                 logger.Info("{0} matches counted.", count);
 
                 // Get the requests from twitter into a text file
-                var requests = new ManipulateRequests(twitterHandler);
+                var requests = new ManipulateRequests();
+                requests.GetRequestsFromTwitter(twitterHandler);
 
                 // get the requests from text file into memory with a dictionary
                 Dictionary<long, string> requestDictionary = new PlayerRequests().GetRequests();
