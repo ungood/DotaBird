@@ -12,15 +12,27 @@ namespace DotaBird.Core.Twitter
 {
     public class TwitterHandler
     {
+        private TwitterService service;
+
+        public TwitterHandler()
+        {
+            service = GetAuthService();
+        }
+
         /// call to twitter to write the player's match summary to the requestor's twitter handle 
         public void PostOnTwitter(MatchSummary summary, string requestor, string playerRequested)
         {
-            TwitterService service = GetAuthService();
-
             SendTweetOptions options = new SendTweetOptions() 
             { Status = LoadUpStatusText(summary, requestor, playerRequested) };
 
             service.SendTweet(options);
+        }
+
+        public IEnumerable<TwitterStatus> ReadTimeLine(long last)
+        {
+            var tweets = service.ListTweetsOnHomeTimeline(new ListTweetsOnHomeTimelineOptions { Count = 200, SinceId = last });
+
+            return tweets;
         }
         
         private TwitterService GetAuthService()
