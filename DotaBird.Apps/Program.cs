@@ -47,12 +47,9 @@ namespace DotaBird.Apps
                 //var count = CountMatches(allUniqueMatches, TimeSpan.FromSeconds(30));           // Test function
                 logger.Info("{0} matches counted.", count);
 
-                // Get the requests from twitter into a text file
-                var requests = new ManipulateRequests();
-                requests.GetRequestsFromTwitter(twitterHandler);
-
-                // get the requests from text file into memory with a dictionary
-                Dictionary<long, string> requestDictionary = new PlayerRequests().GetRequests();
+                // Get the requests from twitter into memory and json file
+                var requestDB = new RequestDatabase();
+                requestDB.GetRequestsFromTwitter(twitterHandler);
 
                 // search through each player in each match,
                 // and check if that playerID matches any player ID from GetRequests()
@@ -61,10 +58,10 @@ namespace DotaBird.Apps
                 {
                     foreach (PlayerSummary player in match.Players)
                     {
-                        foreach(KeyValuePair<long, string> request in requestDictionary)
+                        foreach(Requestor requestor in requestDB.requests.Requestors)
                         {
-                            if (player.AccountId == request.Key)
-                                twitterHandler.PostOnTwitter(match, request.Value, request.Key.ToString());
+                            if (player.AccountId == requestor.PlayerRequested)
+                                twitterHandler.PostOnTwitter(match, requestor.UserName, requestor.PlayerRequested.ToString());
                         }
                     }
                 }
