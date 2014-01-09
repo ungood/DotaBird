@@ -9,6 +9,11 @@ namespace DotaBird.Core.Twitter
 {
     public class PlayerRequests
     {
+        public override string ToString()
+        {
+            return JsonConvert.SerializeObject(this);
+        }
+
         [JsonProperty("lastTweetId")]
         public long LastTweetId { get; set; }
 
@@ -24,4 +29,6 @@ namespace DotaBird.Core.Twitter
         [JsonProperty("playerRequested")]
         public long PlayerRequested { get; set; }
     }
+
+    
 }

@@ -14,7 +14,7 @@ namespace DotaBird.Core.Twitter
     /// Manipulate json file from a requestor calling this service on twitter in order to sign up or to remove themselves
     /// *format of file:
     /// { "lastTweetId": (a long),
-    /// "tweets": [ { "userName": (a string), "playerRequested": (a long; id)}, etc... ] }
+    /// "requestors": [ { "userName": (a string), "playerRequested": (a long; id)}, etc... ] }
     /// *title of file: requests.txt
     /// **Format of tweet:
     /// *for adding: Add me! (space) (Player ID to be added)
@@ -35,8 +35,11 @@ namespace DotaBird.Core.Twitter
             requests = JsonConvert.DeserializeObject<PlayerRequests>(json);  // converts string into json object
 
             var tweetList = twitterHandler.ReadTimeLine(requests.LastTweetId);
+            
+            tweetList = tweetList.ToList<TwitterStatus>();
 
-            requests.LastTweetId = tweetList.Last().Id;     // changes lastTweetId
+            if (tweetList.Any())                                // if tweetList is not empty
+                requests.LastTweetId = tweetList.Last().Id;     // changes lastTweetId
 
             // check the tweets from timeline, add/remove from json object
             var tweets = tweetList.GetEnumerator();
@@ -68,20 +71,19 @@ namespace DotaBird.Core.Twitter
             newRequestor.PlayerRequested = Convert.ToInt64(lines[1]);
             newRequestor.UserName = tweet.User.ScreenName;
 
-            JObject rss = JObject.Parse(requests.ToString());
-            JArray requestors = (JArray)rss["requestors"];
-            requestors.Add(newRequestor);
-
-            requests = JsonConvert.DeserializeObject<PlayerRequests>(rss.ToString());
+            requests.Requestors.Add(newRequestor);
         }
 
-        private void DeleteRequest(TwitterStatus tweet)
+        private void DeleteRequest(TwitterStatus tweet) 
         {
-            JObject rss = JObject.Parse(requests.ToString());
-            JArray requestors = (JArray)rss["requestors"];
-            requestors.Remove(tweet.User.ScreenName);      // need to test this
-
-            requests = JsonConvert.DeserializeObject<PlayerRequests>(rss.ToString());
+            foreach (Requestor current in requests.Requestors)  
+            {
+                if (current.UserName == tweet.User.ScreenName)
+                {
+                    requests.Requestors.Remove(current);
+                    break;
+                }
+            }      
         }
 
         public string ConvertPlayerIDToName(long steamId)

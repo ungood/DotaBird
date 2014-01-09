@@ -43,8 +43,8 @@ namespace DotaBird.Apps
             
             while (true)
             {
-                var count = CountMatches(allUniqueMatches, TimeSpan.FromMinutes(30));          // Live function
-                //var count = CountMatches(allUniqueMatches, TimeSpan.FromSeconds(30));           // Test function
+                //var count = CountMatches(allUniqueMatches, TimeSpan.FromMinutes(30));          // Live function
+                var count = CountMatches(allUniqueMatches, TimeSpan.FromSeconds(30));           // Test function
                 logger.Info("{0} matches counted.", count);
 
                 // Get the requests from twitter into memory and json file
