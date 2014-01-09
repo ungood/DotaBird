@@ -27,11 +27,11 @@ namespace DotaBird.Core.Steam
         }
 
         List<long> ids = new List<long>();
-
+        
         public IEnumerable<MatchSummary> PollMatches()
         {           
             const int ONE_MILLION = 1000000;
-            
+
             while(true) 
             {
                 bool foundDuplicate = false;
@@ -73,11 +73,9 @@ namespace DotaBird.Core.Steam
         public IEnumerable<MatchSummary> GetUniqueMatches(ref bool foundDuplicate) {
             List<MatchSummary> uniqueMatches = new List<MatchSummary>();
 
-            foreach(var summary in GetNextBatch()) {
-                // Remember what we learned about data structures, and the run time.
-                // Is Contains an efficient operation to be doing on a list?
-                // I think there are better ways you can come up with for checking duplicates.
-                // Hint: the matches are always returned in order, most recent first.
+            foreach (var summary in GetNextBatch())
+            {
+             // if (ids.First().Equals(summary.Id) || ids[ids.Count - 1].Equals(summary.Id))  // works unless 2 matches are found at the same time
                 if (ids.Contains(summary.Id))
                 {
                     foundDuplicate = true;
@@ -86,8 +84,8 @@ namespace DotaBird.Core.Steam
 
                 ids.Add(summary.Id);
                 uniqueMatches.Add(summary);
+               
             }
-
             return uniqueMatches;
         }
 

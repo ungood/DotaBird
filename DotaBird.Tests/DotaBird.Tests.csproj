@@ -52,6 +52,7 @@
     <Compile Include="Steam\MatchPollerTest.cs" />
     <Compile Include="Steam\UriExtensionsTest.cs" />
     <Compile Include="Steam\DotaWebApiTest.cs" />
+    <Compile Include="Twitter\TwitterHandlerTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config">
