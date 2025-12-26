@@ -32,7 +32,7 @@ namespace DotaBird.Tests.Steam
             mockWebAPI.Setup(webAPI => webAPI.GetMatchHistory())    
                 .Returns(history);
 
-            var poller = new MatchPoller(mockWebAPI.Object, 100);   
+            var poller = new MatchPoller(mockWebAPI.Object);   
  
             MatchSummary match = null;
             var matches = poller.PollMatches().GetEnumerator();
